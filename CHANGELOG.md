@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.0.0-dev.3.10
+
+### Bugfixes
+
+* Fixed handling of morph target indexed attribute semantics (#178).
+
+* Fixed crash on missing skin weights data (#196).
+
+### Integration updates
+
+* Node builds are now compatible with Web Workers (#201).
+
 ## 2.0.0-dev.3.9
 
 ### Bugfixes
