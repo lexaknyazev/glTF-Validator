@@ -97,6 +97,24 @@ class KhrMaterialsClearcoat extends GltfProperty {
     if (clearcoatNormalTexture != null) {
       context.path.add(CLEARCOAT_NORMAL_TEXTURE);
       clearcoatNormalTexture.link(gltf, context);
+
+      // Normal and clearcoat normal textures should
+      // use the same texture coords.
+      Object o = this;
+      while (o != null) {
+        o = context.owners[o];
+        if (o is Material) {
+          final normalTexture = o.normalTexture;
+          if (normalTexture != null &&
+              normalTexture.texCoord != clearcoatNormalTexture.texCoord) {
+            context.addIssue(
+                SemanticError
+                    .khrMaterialsClearcoatNormalTextureDifferentTexCoords,
+                name: TEX_COORD);
+          }
+          break;
+        }
+      }
       context.path.removeLast();
     }
   }
