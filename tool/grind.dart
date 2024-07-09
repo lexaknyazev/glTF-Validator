@@ -177,8 +177,13 @@ void _npmBuild({bool release = true}) {
 
   {
     // Do not redefine require to avoid webpack complaints
-    final preamble =
-        getPreamble(minified: true).replaceFirst('self.require=require,', '');
+    // and use correct global reference for Web Workers.
+    final preamble = getPreamble(minified: true)
+        .replaceFirst('self.require=require,', '')
+        .replaceFirst(
+            '"undefined"!=typeof global?global:window',
+            '"undefined"!=typeof global?global:'
+                '"undefined"!=typeof window?window:self');
     final file = File(p.join(_nodeTarget, 'gltf_validator.dart.js'));
     file.writeAsStringSync(preamble + file.readAsStringSync());
   }
